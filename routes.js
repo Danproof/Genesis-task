@@ -24,14 +24,6 @@ router.get('/rate', async (req, res) => {
   } catch (e) {
     res.status(400).json('Something went wrong.')
   }
-  //   binance.prices('BTCUAH', (error, ticker) => {
-  //     if (error) {
-  //       res.status(400).json('Something went wrong.')
-  //     } else {
-  //       const rate = Number(ticker.BTCUAH)
-  //       res.json(rate)
-  //     }
-  //   })
 })
 
 router.post('/subscribe', (req, res) => {
