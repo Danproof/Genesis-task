@@ -1,4 +1,3 @@
-import fs from 'fs'
 import { Router } from 'express'
 import { rate } from './rate.js'
 import mail from './mail.js'
