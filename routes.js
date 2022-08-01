@@ -64,7 +64,6 @@ router.post('/sendEmails', async (req, res) => {
     let response = 'Current rate has been sent to all subscribers '
     const current = await rate()
     const invalid_emails = await mail.mailing(`BTC/UAH ${Number(current.BTCUAH)}`)
-    console.log(invalid_emails)
     if (invalid_emails.length) {
       response += `except: ${invalid_emails.join(', ')}`
     }
