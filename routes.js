@@ -61,9 +61,14 @@ router.post('/sendEmails', async (req, res) => {
     #swagger.responses[200] ={description: 'E-mail'и відправлено.'}
   */
   try {
+    let response = 'Current rate has been sent to all subscribers '
     const current = await rate()
-    mail.sendEmails(`BTC/UAH ${Number(current.BTCUAH)}`)
-    res.json('Current rate has been sent to all subscribers.')
+    const invalid_emails = await mail.mailing(`BTC/UAH ${Number(current.BTCUAH)}`)
+    console.log(invalid_emails)
+    if (invalid_emails.length) {
+      response += `except: ${invalid_emails.join(', ')}`
+    }
+    res.json(response)
   } catch (e) {
     res.status(400).json("Something went wrong. I can't get current rate.")
   }
