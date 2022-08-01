@@ -9,6 +9,7 @@ const { EMAIL, PASSWORD } = process.env
 
 class Mail {
   #transporter = null
+  #invalid_emails = []
   constructor() {
     this.#transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -28,19 +29,28 @@ class Mail {
     return true
   }
 
-  async sendEmails(message) {
+  async #sendEmail(recipient, message) {
     try {
-      const info = await this.#transporter.sendMail({
+      await this.#transporter.sendMail({
         from: EMAIL,
-        to: emails,
+        to: recipient,
         subject: 'Current rate',
         text: message,
         html: `<b>${message}</b>`,
       })
-      return info.messageId
     } catch (e) {
-      return e
+      if (!this.#invalid_emails.includes(recipient)) {
+        this.#invalid_emails.push(recipient)
+      }
     }
+  }
+
+  async mailing(message) {
+    let email
+    for (email of emails) {
+      await this.#sendEmail(email, message)
+    }
+    return this.#invalid_emails
   }
 }
 
